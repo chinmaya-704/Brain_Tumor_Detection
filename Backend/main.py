@@ -1,3 +1,6 @@
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
 from flask import Flask, request, jsonify
 from googleapiclient.discovery import build
 from google.oauth2.service_account import Credentials
