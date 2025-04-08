@@ -1,7 +1,26 @@
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
+import os
+import json
 from flask import Flask, request, jsonify
+
+# STEP 1: Write the file from env var
+file_path = 'Backend/model/maximal-quanta-439006-d3-2e6bb58cedfb.json'
+os.makedirs(os.path.dirname(file_path), exist_ok=True)
+creds_json = os.environ.get('GOOGLE_CREDS_JSON')
+
+if creds_json:
+    with open(file_path, 'w') as f:
+        f.write(creds_json)
+else:
+    raise RuntimeError("GOOGLE_CREDS_JSON env var is missing")
+
+# STEP 2: Now safely load it
+with open(file_path) as f:
+    creds = json.load(f)
+    print("Loaded JSON:", creds)
+
 from googleapiclient.discovery import build
 from google.oauth2.service_account import Credentials
 from googleapiclient.http import MediaIoBaseDownload
@@ -11,9 +30,6 @@ from PIL import Image
 from flask_cors import CORS  
 import io
 
-import json
-
-creds_str = os.environ.get('GOOGLE_CREDS_JSON')
 
 SCOPES = ['https://www.googleapis.com/auth/drive']
 SERVICE_ACCOUNT_FILE = 'Backend/model/maximal-quanta-439006-d3-2e6bb58cedfb.json'  
