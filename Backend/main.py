@@ -11,6 +11,10 @@ from PIL import Image
 from flask_cors import CORS  
 import io
 
+import json
+
+creds_str = os.environ.get('GOOGLE_CREDS_JSON')
+
 SCOPES = ['https://www.googleapis.com/auth/drive']
 SERVICE_ACCOUNT_FILE = 'Backend/model/maximal-quanta-439006-d3-2e6bb58cedfb.json'  
 FILE_ID = '18mYD5-5Lchuc4ScByJwh3hY3TMBv5kzB'
