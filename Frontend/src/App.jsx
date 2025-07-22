@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Card, CardContent, Typography } from "@mui/material";
+import { Card, CardContent, Typography } from "@mui/material";
 
 export default function MRIClassifier() {
   const [file, setFile] = useState(null);
@@ -44,13 +44,17 @@ export default function MRIClassifier() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      <Card className="w-full max-w-md p-4">
-        <CardContent className="flex flex-col items-center space-y-4">
-          <input type="file" accept="image/*" onChange={handleFileChange} />
-          <Button onClick={handleUpload} disabled={!file || loading} variant="contained">
+    <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-[url('/back.jpg')] bg-cover bg-center">
+
+      <Card className="w-full max-w-md shadow-lg ">
+
+        <CardContent className="flex flex-col items-center space-y-4 bg-gradient-to-r from-blue-200 to-purple-300 p-6 rounded-lg">
+
+          <input className="mt-6 bg-slate-400 rounded-md" type="file" accept="image/*" onChange={handleFileChange} />
+
+          <button className="mb-4 border-2 border-teal-500 bg-lime-300 py-2 px-3 rounded-lg active:bg-lime-200 hover:bg-lime-400 font-bold text-teal-800" onClick={handleUpload} disabled={!file || loading} variant="contained">
             {loading ? "Processing..." : "Upload & Classify"}
-          </Button>
+          </button>
 
           {error && <p className="text-red-500">{error}</p>}
 

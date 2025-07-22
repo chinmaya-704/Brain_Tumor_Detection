@@ -1,26 +1,9 @@
 import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+# os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 import os
 import json
 from flask import Flask, request, jsonify
-
-# STEP 1: Write the file from env var
-file_path = 'Backend/model/maximal-quanta-439006-d3-2e6bb58cedfb.json'
-os.makedirs(os.path.dirname(file_path), exist_ok=True)
-creds_json = os.environ.get('GOOGLE_CREDS_JSON')
-
-if creds_json:
-    with open(file_path, 'w') as f:
-        f.write(creds_json)
-else:
-    raise RuntimeError("GOOGLE_CREDS_JSON env var is missing")
-
-# STEP 2: Now safely load it
-with open(file_path) as f:
-    creds = json.load(f)
-    print("Loaded JSON:", creds)
-
 from googleapiclient.discovery import build
 from google.oauth2.service_account import Credentials
 from googleapiclient.http import MediaIoBaseDownload
@@ -58,9 +41,10 @@ def download_model_from_drive():
 
 try:
     model_path = download_model_from_drive()
+    model = tf.keras.models.load_model(model_path)
 except Exception as e:
     print(f"Error: {e}")
-model = tf.keras.models.load_model(model_path)
+    model = None  # Model not loaded
 
 tumors={0:'Glioma', 1:'Meningioma', 3:'Pituitary Tumor', 2:'No Tumor'}
 
@@ -78,6 +62,9 @@ def start():
 
 @app.route("/predict", methods=["POST"])
 def predict():
+    if model is None:
+        return jsonify({"error": "Model not loaded"}), 500
+
     if "file" not in request.files:
         return jsonify({"error": "No file uploaded"}), 400
     
