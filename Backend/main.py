@@ -11,8 +11,8 @@ import io
 # -------------------------
 # Path to model
 # -------------------------
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))   # Backend/
-MODEL_PATH = os.path.join(BASE_DIR, "Brain_6.h5")         # Backend/Brain.h5
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))  
+MODEL_PATH = os.path.join(BASE_DIR, "Brain_6.h5")         
 
 app = Flask(__name__)
 CORS(app, resources={r"/predict": {"origins": "http://localhost:5173"}})
